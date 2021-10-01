@@ -11,9 +11,14 @@ dotnet build TodoApp.API\TodoApp.API.csproj
 dotnet publish TodoApp.API\TodoApp.API.csproj --self-contained -r win-x86 -o publish\api
 zipper compress -i publish\api -o api.zip
 
-dotnet build TodoApp.Web\TodoApp.Web.csproj
-dotnet publish TodoApp.Web\TodoApp.Web.csproj --self-contained -r win-x86 -o publish\web
-zipper compress -i publish\web -o web.zip
+# commented out for now due to https://github.com/dotnet/sdk/issues/21677
+# dotnet build TodoApp.Web.Razor\TodoApp.Web.Razor.csproj
+# dotnet publish TodoApp.Web.Razor\TodoApp.Web.Razor.csproj --self-contained -r win-x86 -o publish\razor
+# zipper compress -i publish\razor -o web.zip
+
+dotnet build TodoApp.Web.BlazorServer\TodoApp.Web.BlazorServer.csproj
+dotnet publish TodoApp.Web.BlazorServer\TodoApp.Web.BlazorServer.csproj --self-contained -r win-x86 -o publish\blazorserver
+zipper compress -i publish\blazorserver -o web.zip
 
 #az group create -l westus -n $resourceBaseName
 #az deployment group create --resource-group $resourceBaseName --template-file azure.bicep --parameters resourceBaseName=$resourceBaseName --parameters sqlUsername=$sqlServerDbUsername --parameters sqlPassword=$sqlServerDbPwd 
