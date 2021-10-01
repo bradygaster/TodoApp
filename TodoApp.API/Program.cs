@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TodoApp;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,16 +84,6 @@ app.MapDelete("/todo/{id}", async (TodoDbContext dbContext, int id) =>
     .Produces<Todo>(StatusCodes.Status200OK);
 
 app.Run();
-
-public class Todo
-{
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
-    [Required]
-    public string Title { get; set; } = string.Empty;
-    public bool IsCompleted { get; set; } = false;
-}
 
 public class TodoDbContext : DbContext
 {

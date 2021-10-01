@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TodoApp.API\TodoApp.API.csproj" />
+    <ProjectReference Include="..\TodoApp.Telemetry\TodoApp.csproj" />
   </ItemGroup>
 
 </Project>
