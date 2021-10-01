@@ -23,9 +23,7 @@
             <div class="list-group mx-0">
                 @foreach (var todo in Model.Todos)
                 {
-                    var fadedClass = todo.IsCompleted ? "faded" : "";
-
-                    <label class="list-group-item d-flex gap-2 @fadedClass">
+                    <label class="list-group-item d-flex gap-2">
                         <span>
                             <button type="submit" class="btn-danger btn"
                                     asp-route-todoId="@todo.Id"
@@ -37,7 +35,7 @@
                         </span>
                         @if(todo.IsCompleted)
                         {
-                            <span>
+                            <span class="faded">
                                 <button type="submit" class="btn btn-success"
                                         asp-route-todoId="@todo.Id"
                                         asp-page-handler="MarkComplete">
@@ -46,7 +44,7 @@
                                     </svg>
                                 </button>
                             </span>
-                            <p class="strike">@todo.Title</p>
+                            <p class="strike faded">@todo.Title</p>
                         }
                         else
                         {
