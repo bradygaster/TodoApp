@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TodoApp.Telemetry\TodoApp.csproj" />
+    <ProjectReference Include="..\TodoApp\TodoApp.csproj" />
   </ItemGroup>
 
 </Project>
