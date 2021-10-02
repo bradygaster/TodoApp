@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# TodoApp-specific files
+api.zip
+web.zip
+
 # User-specific files
 *.rsuser
 *.suo
