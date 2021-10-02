@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using TodoApp.Web.BlazorServer.Data;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
@@ -16,12 +12,8 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 
-
 app.UseStaticFiles();
-
 app.UseRouting();
-
-
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
