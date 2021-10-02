@@ -5,11 +5,11 @@ namespace TodoApp.Web.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly ILogger<IndexModel>? _logger;
         private readonly ITodoApiClient _todoApiClient;
 
         [BindProperty]
-        public Todo NewTodo { get; set; }
+        public Todo? NewTodo { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, ITodoApiClient todoApiClient)
         {
@@ -17,7 +17,7 @@ namespace TodoApp.Web.Pages
             _todoApiClient = todoApiClient;
         }
 
-        public IEnumerable<Todo> Todos { get; private set; }
+        public IEnumerable<Todo>? Todos { get; private set; }
 
         public async Task OnGet()
         {
@@ -32,7 +32,8 @@ namespace TodoApp.Web.Pages
                 return Page();
             }
 
-            await _todoApiClient.CreateTodo(NewTodo);
+            if(NewTodo != null)
+                await _todoApiClient.CreateTodo(NewTodo);
 
             return RedirectToPage("./Index");
         }
