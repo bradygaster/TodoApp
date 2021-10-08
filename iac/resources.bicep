@@ -1,9 +1,9 @@
-param sqlUsername string
-param sqlPassword string
-param resourceBaseName string
+param sqlUsername string = 'sqluser'
+param sqlPassword string = 'zjnv8374mt7yj867g6'
+param basename string
 
 resource sqlServer 'Microsoft.Sql/servers@2014-04-01' ={
-  name: '${resourceBaseName}srv'
+  name: '${basename}srv'
   location: resourceGroup().location
   properties: {
     administratorLogin: sqlUsername
@@ -22,7 +22,7 @@ resource sqlFirewallRules 'Microsoft.Sql/servers/firewallRules@2014-04-01' = {
 
 resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2014-04-01' = {
   parent: sqlServer
-  name: '${resourceBaseName}db'
+  name: '${basename}db'
   location: resourceGroup().location
   properties: {
     collation: 'SQL_Latin1_General_CP1_CI_AS'
@@ -33,7 +33,7 @@ resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2014-04-01' = {
 }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
-  name: '${resourceBaseName}hostingplan'
+  name: '${basename}hostingplan'
   location: resourceGroup().location
   sku: {
     name: 'F1'
@@ -42,7 +42,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
 }
 
 resource appInsightsComponents 'Microsoft.Insights/components@2020-02-02-preview' = {
-  name: '${resourceBaseName}ai'
+  name: '${basename}ai'
   location: resourceGroup().location
   kind: 'web'
   properties: {
@@ -52,7 +52,7 @@ resource appInsightsComponents 'Microsoft.Insights/components@2020-02-02-preview
 
 
 resource api 'Microsoft.Web/sites@2018-11-01' = {
-  name: '${resourceBaseName}-api'
+  name: '${basename}-api'
   location: resourceGroup().location
   properties: {
     serverFarmId: appServicePlan.id
@@ -70,7 +70,7 @@ resource api 'Microsoft.Web/sites@2018-11-01' = {
       connectionStrings: [
         {
           name: 'TodoDb'
-          connectionString: 'Data Source=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433; Initial Catalog=${resourceBaseName}db;User Id=${sqlUsername};Password=${sqlPassword};'
+          connectionString: 'Data Source=tcp:${sqlServer.properties.fullyQualifiedDomainName},1433; Initial Catalog=${basename}db;User Id=${sqlUsername};Password=${sqlPassword};'
         }
       ]
     }
@@ -78,7 +78,7 @@ resource api 'Microsoft.Web/sites@2018-11-01' = {
 }
 
 resource ui 'Microsoft.Web/sites@2018-11-01' = {
-  name: '${resourceBaseName}-web'
+  name: '${basename}-web'
   location: resourceGroup().location
   properties: {
     serverFarmId: appServicePlan.id
