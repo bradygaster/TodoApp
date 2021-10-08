@@ -1,6 +1,6 @@
 name: todoapp
 services:
-  - name: ${BASENAME}api
-    project: ..\TodoApp.API.csproj
-  - name: ${BASENAME}web
-    project: ..\TodoApp.Web.BlazorServer.csproj
+  - name: todoapp325api
+    project: '../TodoApp.API/TodoApp.API.csproj'
+  - name: todoapp325web
+    project: '../TodoApp.Web.BlazorServer/TodoApp.Web.BlazorServer.csproj'
