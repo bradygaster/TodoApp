@@ -22,3 +22,5 @@ module resources './resources.bicep' = {
     basename: toLower(basename)
   }
 }
+
+output ApiUrlBase string = resources.outputs.ApiUrlBase

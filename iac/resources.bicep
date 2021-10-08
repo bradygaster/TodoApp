@@ -100,3 +100,5 @@ resource ui 'Microsoft.Web/sites@2018-11-01' = {
     }
   }
 }
+
+output ApiUrlBase string = api.properties.defaultHostName
