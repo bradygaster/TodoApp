@@ -1,6 +1,6 @@
-param sqlUsername string = 'sqluser'
-param sqlPassword string = 'zjnv8374mt7yj867g6'
 param basename string
+param sqlUsername string
+param sqlPassword string
 
 resource sqlServer 'Microsoft.Sql/servers@2014-04-01' ={
   name: '${basename}srv'
@@ -9,26 +9,24 @@ resource sqlServer 'Microsoft.Sql/servers@2014-04-01' ={
     administratorLogin: sqlUsername
     administratorLoginPassword: sqlPassword
   }
-}
 
-resource sqlFirewallRules 'Microsoft.Sql/servers/firewallRules@2014-04-01' = {
-  parent: sqlServer
-  name: 'dbfirewallrules'
-  properties: {
-    startIpAddress: '0.0.0.0'
-    endIpAddress: '0.0.0.0'
+  resource sqlFirewallRules 'firewallRules' = {
+    name: 'dbfirewallrules'
+    properties: {
+      startIpAddress: '0.0.0.0'
+      endIpAddress: '0.0.0.0'
+    }
   }
-}
 
-resource sqlServerDatabase 'Microsoft.Sql/servers/databases@2014-04-01' = {
-  parent: sqlServer
-  name: '${basename}db'
-  location: resourceGroup().location
-  properties: {
-    collation: 'SQL_Latin1_General_CP1_CI_AS'
-    edition: 'Basic'
-    maxSizeBytes: '2147483648'
-    requestedServiceObjectiveName: 'Basic'
+  resource sqlServerDatabase 'databases' = {
+    name: '${basename}db'
+    location: resourceGroup().location
+    properties: {
+      collation: 'SQL_Latin1_General_CP1_CI_AS'
+      edition: 'Basic'
+      maxSizeBytes: '2147483648'
+      requestedServiceObjectiveName: 'Basic'
+    }
   }
 }
 
@@ -52,11 +50,12 @@ resource appInsightsComponents 'Microsoft.Insights/components@2020-02-02-preview
 
 
 resource api 'Microsoft.Web/sites@2018-11-01' = {
-  name: '${basename}-api'
+  name: '${basename}api'
   location: resourceGroup().location
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
+      netFrameworkVersion: 'v6.0'
       appSettings: [
         {
           name: 'ASPNETCORE_ENVIRONMENT'
@@ -78,11 +77,13 @@ resource api 'Microsoft.Web/sites@2018-11-01' = {
 }
 
 resource ui 'Microsoft.Web/sites@2018-11-01' = {
-  name: '${basename}-web'
+  name: '${basename}web'
   location: resourceGroup().location
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
+      netFrameworkVersion: 'v6.0'
+      webSocketsEnabled: true
       appSettings: [
         {
           name: 'ASPNETCORE_ENVIRONMENT'
@@ -100,5 +101,3 @@ resource ui 'Microsoft.Web/sites@2018-11-01' = {
     }
   }
 }
-
-output ApiUrlBase string = api.properties.defaultHostName

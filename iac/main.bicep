@@ -8,6 +8,12 @@ param basename string
 @description('Primary location for all resources')
 param location string = 'westus2'
 
+@description('Username for SQL connection')
+param sqlUsername string
+
+@description('Password for SQL connection')
+param sqlPassword string
+
 param principalId string = ''
 
 resource rg 'Microsoft.Resources/resourceGroups@2020-06-01' = {
@@ -20,7 +26,7 @@ module resources './resources.bicep' = {
   scope: rg
   params: {
     basename: toLower(basename)
+    sqlUsername: sqlUsername
+    sqlPassword: sqlPassword
   }
 }
-
-output ApiUrlBase string = resources.outputs.ApiUrlBase
