@@ -77,8 +77,32 @@ resource api 'Microsoft.Web/sites@2018-11-01' = {
   }
 }
 
-resource ui 'Microsoft.Web/sites@2018-11-01' = {
-  name: '${resourceBaseName}-web'
+resource razor_ui 'Microsoft.Web/sites@2018-11-01' = {
+  name: '${resourceBaseName}-razor'
+  location: resourceGroup().location
+  properties: {
+    serverFarmId: appServicePlan.id
+    siteConfig: {
+      appSettings: [
+        {
+          name: 'ASPNETCORE_ENVIRONMENT'
+          value: 'Development'
+        }
+        {
+          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+          value: appInsightsComponents.properties.InstrumentationKey
+        }
+        {
+          name: 'ApiUrlBase'
+          value: 'https://${api.properties.defaultHostName}'
+        }
+      ]
+    }
+  }
+}
+
+resource blazor_ui 'Microsoft.Web/sites@2018-11-01' = {
+  name: '${resourceBaseName}-blazorserver'
   location: resourceGroup().location
   properties: {
     serverFarmId: appServicePlan.id
