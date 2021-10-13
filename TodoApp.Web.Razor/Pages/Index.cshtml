@@ -7,7 +7,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <input asp-for="NewTodo.Title"
+                <input asp-for="NewTodo!.Title"
                        autofocus
                        style="margin-right: 10px;"
                        asp-asp-page-handler="CreateNewTodo"
@@ -21,7 +21,7 @@
     <div class="container">
         <main role="main" class="pb-3">
             <div class="list-group mx-0">
-                @foreach (var todo in Model.Todos.OrderBy(x => x.IsCompleted).ThenBy(x => x.Id))
+                @foreach (var todo in Model.Todos!.OrderBy(x => x.IsCompleted).ThenBy(x => x.Id))
                 {
                     <label class="list-group-item d-flex gap-2">
                         @if(todo.IsCompleted)
