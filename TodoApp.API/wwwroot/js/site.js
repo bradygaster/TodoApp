@@ -31,11 +31,7 @@ createTodo = () => {
 }
 
 document.body.addEventListener('htmx:afterRequest', function (evt) {
-    try {
-        if (evt.detail.elt.className.indexOf('btn-delete') > 0) {
-            htmx.trigger(htmx.find('#getOnLoadDiv'), 'refresh');
-        }
-    } catch (e) {
-
+    if (evt.detail.elt.className.indexOf('btn-delete') > 0) {
+        htmx.trigger(htmx.find('#getOnLoadDiv'), 'refresh');
     }
 });
