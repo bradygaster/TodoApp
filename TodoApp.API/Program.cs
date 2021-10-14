@@ -1,8 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.Mime;
-using System.Text;
 using TodoApp;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -105,7 +101,7 @@ static class ResultsExtensions
     public static IResult FromStaticFile(this IWebHostEnvironment env, string filename, string contentType = "text/html")
     {
         var memoryStream = new MemoryStream();
-        using (var stream = File.OpenRead(Path.Combine(env.WebRootPath, "index.html")))
+        using (var stream = File.OpenRead(Path.Combine(env.WebRootPath, filename)))
         {
             stream.CopyTo(memoryStream);
         }
