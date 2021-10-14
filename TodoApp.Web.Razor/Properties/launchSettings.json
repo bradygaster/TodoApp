@@ -1,25 +1,10 @@
 ﻿{
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:5941",
-      "sslPort": 0
-    }
-  },
   "profiles": {
-    "TodoApp.Web": {
+    "TodoApp.Web.Razor": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5022",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
+      "applicationUrl": "http://localhost:4002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
