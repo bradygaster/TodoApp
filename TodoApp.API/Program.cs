@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using TodoApp;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +8,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddApplicationMapName();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDirectoryBrowser();
 
 var app = builder.Build();
+app.UseFileServer();
+app.UseStaticFiles();
 
 if (app.Environment.IsDevelopment())
 {
@@ -83,6 +84,9 @@ app.MapDelete("/todo/{id}", async (TodoDbContext dbContext, int id) =>
     .Produces(StatusCodes.Status404NotFound)
     .Produces<Todo>(StatusCodes.Status200OK);
 
+// static UI
+app.MapGet("/", (IWebHostEnvironment env) => env.FromStaticFile("index.html"));
+
 app.Run();
 
 public class TodoDbContext : DbContext
@@ -90,4 +94,19 @@ public class TodoDbContext : DbContext
     public TodoDbContext(DbContextOptions<TodoDbContext> options) : base(options) { }
 
     public DbSet<Todo> Todos => Set<Todo>();
+}
+
+static class ResultsExtensions
+{
+    public static IResult FromStaticFile(this IWebHostEnvironment env, string filename, string contentType = "text/html")
+    {
+        var memoryStream = new MemoryStream();
+        using (var stream = File.OpenRead(Path.Combine(env.WebRootPath, filename)))
+        {
+            stream.CopyTo(memoryStream);
+        }
+
+        memoryStream.Position = 0;
+        return Results.Stream(memoryStream, contentType: contentType);
+    }
 }

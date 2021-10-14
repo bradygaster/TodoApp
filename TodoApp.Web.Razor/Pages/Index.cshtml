@@ -21,7 +21,7 @@
     <div class="container">
         <main role="main" class="pb-3">
             <div class="list-group mx-0">
-                @foreach (var todo in Model.Todos!.OrderBy(x => x.IsCompleted).ThenBy(x => x.Id))
+                @foreach (var todo in Model.Todos!)
                 {
                     <label class="list-group-item d-flex gap-2">
                         @if(todo.IsCompleted)
