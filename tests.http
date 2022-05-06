@@ -1,0 +1,14 @@
+GET https://backend.ambitiousbay-c88a3b4c.eastus.azurecontainerapps.io/todos
+
+###
+
+POST https://backend.ambitiousbay-c88a3b4c.eastus.azurecontainerapps.io/todos
+Content-Type: application/json
+#Accept: application/json
+
+{
+    "title": "test from client",
+    "isCompleted": false
+}
+
+###
