@@ -33,7 +33,7 @@
         Task<Todo> GetTodo(int id);
 
         [Post("/todos")]
-        Task<Todo> CreateTodo(Todo todo);
+        Task CreateTodo(Todo todo);
 
         [Delete("/todo/{id}")]
         Task DeleteTodo(int id);
@@ -55,9 +55,9 @@
             _httpClient.BaseAddress = new Uri(_configuration["ApiUrlBase"]);
         }
 
-        public async Task<Todo> CreateTodo(Todo todo)
+        public async Task CreateTodo(Todo todo)
         {
-            return await RestService.For<ITodoApiClient>(_httpClient).CreateTodo(todo);
+            await RestService.For<ITodoApiClient>(_httpClient).CreateTodo(todo);
         }
 
         public async Task DeleteTodo(int id)

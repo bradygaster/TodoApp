@@ -32,7 +32,7 @@ app.MapPost("/todos", async (TodoDbContext dbContext, Todo todo) =>
         dbContext.Todos.Add(todo);
         await dbContext.SaveChangesAsync();
 
-        return Results.Ok(todo);
+        return Results.Ok();
     })
     .WithName("CreateTodo")
     .Produces(StatusCodes.Status409Conflict)
