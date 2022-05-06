@@ -3,7 +3,7 @@ using TodoApp;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<TodoDbContext>(optionsBuilder => optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("TodoDb")));
+builder.Services.AddDbContext<TodoDbContext>(optionsBuilder => optionsBuilder.UseSqlServer(builder.Configuration.GetValue<string>("TodoDb")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddApplicationMapName();

@@ -9,13 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Web.Razor", "TodoAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp", "TodoApp\TodoApp.csproj", "{2BD1956F-8AA0-4675-B9E1-005382DB437E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{75F15782-22D9-4DDE-B858-80D424995A6C}"
-	ProjectSection(SolutionItems) = preProject
-		azure.bicep = azure.bicep
-		setup.ps1 = setup.ps1
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Web.BlazorServer", "TodoApp.Web.BlazorServer\TodoApp.Web.BlazorServer.csproj", "{42EFE8A7-5999-4CDA-8022-DA362C7E8E89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Web.BlazorServer", "TodoApp.Web.BlazorServer\TodoApp.Web.BlazorServer.csproj", "{42EFE8A7-5999-4CDA-8022-DA362C7E8E89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
