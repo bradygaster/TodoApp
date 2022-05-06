@@ -60,7 +60,7 @@ var backend_config = [
 var frontend_config = [
   {
     name: 'ApiUrlBase'
-    value: backend.outputs.fqdn
+    value: 'http://${backend.outputs.fqdn}'
   }
 ]
 
