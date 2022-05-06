@@ -7,15 +7,20 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Net.Http;
+    using System.Text.Json.Serialization;
     using System.Threading.Tasks;
 
     public class Todo
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
         [Required]
+        [JsonPropertyName("title")]
         public string Title { get; set; } = string.Empty;
+        
+        [JsonPropertyName("isCompleted")]
         public bool IsCompleted { get; set; } = false;
     }
 

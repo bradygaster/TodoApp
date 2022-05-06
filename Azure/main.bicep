@@ -75,7 +75,7 @@ module backend 'container_app.bicep' = {
     containerAppEnvironmentId: env.outputs.id
     registry: acr.name
     envVars: union(shared_config, backend_config)
-    externalIngress: false
+    externalIngress: true
   }
 }
 
