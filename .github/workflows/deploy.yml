@@ -16,10 +16,10 @@ env:
   BACKEND_DOCKER_FILE: TodoApp.API/Dockerfile
   BACKEND_IMAGE_NAME: backend
 
-  RAZOR_FRONTEND_DOCKER_FILE: TodoApp.Web.Razor/Dockerfile
+  RAZOR_DOCKER_FILE: TodoApp.Web.Razor/Dockerfile
   RAZOR_IMAGE_NAME: razor
 
-  BLAZOR_FRONTEND_DOCKER_FILE: TodoApp.Web.BlazorServer/Dockerfile
+  BLAZOR_DOCKER_FILE: TodoApp.Web.BlazorServer/Dockerfile
   BLAZOR_IMAGE_NAME: blazor
 
 jobs:
