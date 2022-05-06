@@ -32,11 +32,11 @@ app.MapPost("/todos", async (TodoDbContext dbContext, Todo todo) =>
         dbContext.Todos.Add(todo);
         await dbContext.SaveChangesAsync();
 
-        return Results.Created($"/todo/{todo.Id}", todo);
+        return Results.Ok(todo);
     })
     .WithName("CreateTodo")
     .Produces(StatusCodes.Status409Conflict)
-    .Produces<Todo>(StatusCodes.Status201Created);
+    .Produces<Todo>(StatusCodes.Status200OK);
 
 // Retrieve all todos
 app.MapGet("/todos", async (TodoDbContext dbContext) => await dbContext.Todos.ToListAsync())
@@ -65,11 +65,11 @@ app.MapPut("/todo/{id}", async (TodoDbContext dbContext, int id, Todo todo) =>
         dbContext.Update(existing);
         await dbContext.SaveChangesAsync();
 
-        return Results.Accepted($"/todo/{id}", todo);
+        return Results.Ok(todo);
     })
     .WithName("UpdateTodo")
     .Produces(StatusCodes.Status404NotFound)
-    .Produces<Todo>(StatusCodes.Status202Accepted);
+    .Produces<Todo>(StatusCodes.Status200OK);
 
 // Delete a specific todo
 app.MapDelete("/todo/{id}", async (TodoDbContext dbContext, int id) =>
