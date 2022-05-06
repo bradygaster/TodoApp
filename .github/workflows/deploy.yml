@@ -142,15 +142,15 @@ jobs:
 
           az containerapp update -n razor -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.RAZOR_IMAGE_NAME }}:${{ github.sha }}
 
-  #   - name: Deploy Blazor Frontend
-  #     uses: azure/CLI@v1
-  #     with:
-  #       inlineScript: >
-  #         echo "Deploying Silo"
+    - name: Deploy Blazor Frontend
+      uses: azure/CLI@v1
+      with:
+        inlineScript: >
+          echo "Deploying Silo"
           
-  #         az containerapp registry set -n blazor -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
+          az containerapp registry set -n blazor -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
 
-  #         az containerapp update -n blazor -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BLAZOR_IMAGE_NAME }}:${{ github.sha }}
+          az containerapp update -n blazor -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BLAZOR_IMAGE_NAME }}:${{ github.sha }}
 
     - name: logout
       run: >
