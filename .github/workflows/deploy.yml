@@ -91,12 +91,12 @@ jobs:
         tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.RAZOR_IMAGE_NAME }}:${{ github.sha }}
         file: ${{ env.RAZOR_DOCKER_FILE }}
 
-    # - name: Build the blazor server frontend and push it to ACR
-    #   uses: docker/build-push-action@v2
-    #   with:
-    #     push: true
-    #     tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BLAZOR_IMAGE_NAME }}:${{ github.sha }}
-    #     file: ${{ env.BLAZOR_DOCKER_FILE }}
+    - name: Build the blazor server frontend and push it to ACR
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BLAZOR_IMAGE_NAME }}:${{ github.sha }}
+        file: ${{ env.BLAZOR_DOCKER_FILE }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -132,15 +132,15 @@ jobs:
 
           az containerapp update -n backend -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
 
-  #   - name: Deploy Razor Frontend
-  #     uses: azure/CLI@v1
-  #     with:
-  #       inlineScript: >
-  #         echo "Deploying Silo"
+    - name: Deploy Razor Frontend
+      uses: azure/CLI@v1
+      with:
+        inlineScript: >
+          echo "Deploying Silo"
           
-  #         az containerapp registry set -n razor -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
+          az containerapp registry set -n razor -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
 
-  #         az containerapp update -n razor -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.RAZOR_IMAGE_NAME }}:${{ github.sha }}
+          az containerapp update -n razor -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.RAZOR_IMAGE_NAME }}:${{ github.sha }}
 
   #   - name: Deploy Blazor Frontend
   #     uses: azure/CLI@v1
@@ -152,6 +152,6 @@ jobs:
 
   #         az containerapp update -n blazor -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BLAZOR_IMAGE_NAME }}:${{ github.sha }}
 
-  #   - name: logout
-  #     run: >
-  #       az logout
+    - name: logout
+      run: >
+        az logout
