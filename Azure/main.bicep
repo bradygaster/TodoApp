@@ -20,8 +20,8 @@ resource acr 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
 module sql 'sql.bicep' = {
   name: 'sql'
   params: {
-    sqlPassword: sqlUsername
-    sqlUsername: sqlPassword
+    sqlPassword: sqlPassword
+    sqlUsername: sqlUsername
   }
 }
 

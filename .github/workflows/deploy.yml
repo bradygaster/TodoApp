@@ -51,7 +51,7 @@ jobs:
         inlineScript: >
           echo "Creating resources"
 
-          az deployment group create --resource-group ${{ env.RESOURCE_GROUP_NAME }} --template-file '/github/workspace/Azure/main.bicep' --parameters sqlUsername=${{ secrets.SQLUSER }} --parameters sqlUsername=${{ secrets.SQLPWD }} --debug
+          az deployment group create --resource-group ${{ env.RESOURCE_GROUP_NAME }} --template-file '/github/workspace/Azure/main.bicep' --parameters sqlUsername=${{ secrets.SQLUSER }} --parameters sqlPassword=${{ secrets.SQLPWD }} --debug
 
   build:
     runs-on: ubuntu-latest
