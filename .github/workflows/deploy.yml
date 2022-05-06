@@ -73,11 +73,8 @@ jobs:
     - name: Login to ACR
       run: |
         set -euo pipefail
-        # see https://cloudarchitected.com/2021/09/logging-into-acr-in-github-actions/
-        # see https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md#calling-post-oauth2exchange-to-get-an-acr-refresh-token
         access_token=$(az account get-access-token --query accessToken -o tsv)
         refresh_token=$(curl https://${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/oauth2/exchange -v -d "grant_type=access_token&service=${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io&access_token=$access_token" | jq -r .refresh_token)
-        # The null GUID 0000... tells the container registry that this is an ACR refresh token during the login flow
         docker login -u 00000000-0000-0000-0000-000000000000 --password-stdin ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io <<< "$refresh_token"
 
     - name: Build the backend and push it to ACR
@@ -87,74 +84,74 @@ jobs:
         tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
         file: ${{ env.BACKEND_DOCKER_FILE }}
 
-    - name: Build the razor frontend and push it to ACR
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.RAZOR_IMAGE_NAME }}:${{ github.sha }}
-        file: ${{ env.RAZOR_DOCKER_FILE }}
+    # - name: Build the razor frontend and push it to ACR
+    #   uses: docker/build-push-action@v2
+    #   with:
+    #     push: true
+    #     tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.RAZOR_IMAGE_NAME }}:${{ github.sha }}
+    #     file: ${{ env.RAZOR_DOCKER_FILE }}
 
-    - name: Build the blazor server frontend and push it to ACR
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BLAZOR_IMAGE_NAME }}:${{ github.sha }}
-        file: ${{ env.BLAZOR_DOCKER_FILE }}
+    # - name: Build the blazor server frontend and push it to ACR
+    #   uses: docker/build-push-action@v2
+    #   with:
+    #     push: true
+    #     tags: ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BLAZOR_IMAGE_NAME }}:${{ github.sha }}
+    #     file: ${{ env.BLAZOR_DOCKER_FILE }}
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build
 
-    steps:
+  #   steps:
 
-    - name: Checkout to the branch
-      uses: actions/checkout@v2
+  #   - name: Checkout to the branch
+  #     uses: actions/checkout@v2
 
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AzureSPN }}
+  #   - name: Azure Login
+  #     uses: azure/login@v1
+  #     with:
+  #       creds: ${{ secrets.AzureSPN }}
 
-    - name: Installing Container Apps extension
-      uses: azure/CLI@v1
-      with:
-        inlineScript: >
-          echo "Installing containerapp extension"
+  #   - name: Installing Container Apps extension
+  #     uses: azure/CLI@v1
+  #     with:
+  #       inlineScript: >
+  #         echo "Installing containerapp extension"
 
-          az config set extension.use_dynamic_install=yes_without_prompt
+  #         az config set extension.use_dynamic_install=yes_without_prompt
 
-          az extension add --name containerapp --yes
+  #         az extension add --name containerapp --yes
 
-    - name: Deploy Backend
-      uses: azure/CLI@v1
-      with:
-        inlineScript: >
-          echo "Deploying Silo"
+  #   - name: Deploy Backend
+  #     uses: azure/CLI@v1
+  #     with:
+  #       inlineScript: >
+  #         echo "Deploying Silo"
           
-          az containerapp registry set -n backend -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
+  #         az containerapp registry set -n backend -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
 
-          az containerapp update -n backend -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
+  #         az containerapp update -n backend -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
 
-    - name: Deploy Razor Frontend
-      uses: azure/CLI@v1
-      with:
-        inlineScript: >
-          echo "Deploying Silo"
+  #   - name: Deploy Razor Frontend
+  #     uses: azure/CLI@v1
+  #     with:
+  #       inlineScript: >
+  #         echo "Deploying Silo"
           
-          az containerapp registry set -n razor -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
+  #         az containerapp registry set -n razor -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
 
-          az containerapp update -n razor -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.RAZOR_IMAGE_NAME }}:${{ github.sha }}
+  #         az containerapp update -n razor -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.RAZOR_IMAGE_NAME }}:${{ github.sha }}
 
-    - name: Deploy Blazor Frontend
-      uses: azure/CLI@v1
-      with:
-        inlineScript: >
-          echo "Deploying Silo"
+  #   - name: Deploy Blazor Frontend
+  #     uses: azure/CLI@v1
+  #     with:
+  #       inlineScript: >
+  #         echo "Deploying Silo"
           
-          az containerapp registry set -n blazor -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
+  #         az containerapp registry set -n blazor -g ${{ env.RESOURCE_GROUP_NAME }} --server ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io
 
-          az containerapp update -n blazor -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BLAZOR_IMAGE_NAME }}:${{ github.sha }}
+  #         az containerapp update -n blazor -g ${{ env.RESOURCE_GROUP_NAME }} -i ${{ env.RESOURCE_GROUP_NAME }}acr.azurecr.io/${{ env.BLAZOR_IMAGE_NAME }}:${{ github.sha }}
 
-    - name: logout
-      run: >
-        az logout
+  #   - name: logout
+  #     run: >
+  #       az logout
