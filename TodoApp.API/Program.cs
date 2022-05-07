@@ -27,12 +27,13 @@ if (app.Environment.IsDevelopment())
 }
 
 // Create a new todo
-app.MapPost("/todos", async (Todo todo, TodoDbContext dbContext) =>
+app.MapPost("/todos", async (string title, TodoDbContext dbContext) =>
     {
-        app.Logger.LogInformation($"ToDoApp: Received new Todo with title '{todo.Title}'.");
-        dbContext.Todos.Add(todo);
+        app.Logger.LogInformation($"ToDoApp: Received new Todo with title '{title}'.");
+        var newTodo = new Todo { Title = title };
+        dbContext.Todos.Add(newTodo);
         await dbContext.SaveChangesAsync();
-        app.Logger.LogInformation($"ToDoApp: Saved new Todo with title '{todo.Title}'. New Todo.Id is {todo.Id}.");
+        app.Logger.LogInformation($"ToDoApp: Saved new Todo with title '{title}'. New Todo.Id is {newTodo.Id}.");
 
         return Results.Ok();
     })

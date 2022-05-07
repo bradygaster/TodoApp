@@ -34,7 +34,7 @@
         Task<Todo> GetTodo(int id);
 
         [Post("/todos")]
-        Task CreateTodo([Body] Todo todo);
+        Task CreateTodo(string title);
 
         [Delete("/todo/{id}")]
         Task DeleteTodo(int id);
@@ -59,11 +59,11 @@
             _logger = logger;
         }
 
-        public async Task CreateTodo([Body] Todo todo)
+        public async Task CreateTodo(string title)
         {
-            _logger.LogInformation($"ToDoApp: Client sending new Todo with title '{todo.Title}'.");
-            await RestService.For<ITodoApiClient>(_httpClient).CreateTodo(todo);
-            _logger.LogInformation($"ToDoApp: Client sent new Todo with title '{todo.Title}'.");
+            _logger.LogInformation($"ToDoApp: Client sending new Todo with title '{title}'.");
+            await RestService.For<ITodoApiClient>(_httpClient).CreateTodo(title);
+            _logger.LogInformation($"ToDoApp: Client sent new Todo with title '{title}'.");
         }
 
         public async Task DeleteTodo(int id)
