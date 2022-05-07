@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApp;
 
@@ -28,7 +27,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Create a new todo
-app.MapPost("/todos", async ([FromBody] Todo todo, TodoDbContext dbContext) =>
+app.MapPost("/todos", async (Todo todo, TodoDbContext dbContext) =>
     {
         app.Logger.LogInformation($"ToDoApp: Received new Todo with title '{todo.Title}'.");
         dbContext.Todos.Add(todo);
@@ -38,6 +37,7 @@ app.MapPost("/todos", async ([FromBody] Todo todo, TodoDbContext dbContext) =>
         return Results.Ok();
     })
     .WithName("CreateTodo")
+    .Accepts(typeof(Todo), "application/json")
     .Produces(StatusCodes.Status409Conflict)
     .Produces<Todo>(StatusCodes.Status200OK);
 
