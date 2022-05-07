@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApp;
 
@@ -27,7 +28,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Create a new todo
-app.MapPost("/todos", async (Todo todo, TodoDbContext dbContext) =>
+app.MapPost("/todos", async ([FromBody] Todo todo, TodoDbContext dbContext) =>
     {
         app.Logger.LogInformation($"ToDoApp: Received new Todo with title '{todo.Title}'.");
         dbContext.Todos.Add(todo);
@@ -58,6 +59,7 @@ app.MapGet("/todo/{id}", async (TodoDbContext dbContext, int id) =>
 // Update an existing todo
 app.MapPut("/todo/{id}", async (TodoDbContext dbContext, int id, Todo todo) =>
     {
+        app.Logger.LogInformation($"ToDoApp: Received new PUT for '{todo.Title}'.");
         var existing = await dbContext.Todos.FirstOrDefaultAsync(_ => _.Id == id);
         if (existing == null) return Results.NotFound();
 
@@ -66,7 +68,7 @@ app.MapPut("/todo/{id}", async (TodoDbContext dbContext, int id, Todo todo) =>
 
         dbContext.Update(existing);
         await dbContext.SaveChangesAsync();
-
+        app.Logger.LogInformation($"ToDoApp: UPDATED todo '{todo.Id}'.");
         return Results.Ok(todo);
     })
     .WithName("UpdateTodo")
@@ -76,10 +78,12 @@ app.MapPut("/todo/{id}", async (TodoDbContext dbContext, int id, Todo todo) =>
 // Delete a specific todo
 app.MapDelete("/todo/{id}", async (TodoDbContext dbContext, int id) =>
     {
+        app.Logger.LogInformation($"ToDoApp: Received new DELETE for todo #'{id}'.");
         var existing = await dbContext.Todos.FirstOrDefaultAsync(_ => _.Id == id);
         if (existing == null) return Results.NotFound();
         dbContext.Todos.Remove(existing);
         await dbContext.SaveChangesAsync();
+        app.Logger.LogInformation($"ToDoApp: DELETED todo #'{id}'.");
         return Results.Ok();
     })
     .WithName("DeleteTodo")
