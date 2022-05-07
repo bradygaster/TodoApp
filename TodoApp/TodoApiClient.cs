@@ -59,7 +59,7 @@
             _logger = logger;
         }
 
-        public async Task CreateTodo(Todo todo)
+        public async Task CreateTodo([Body] Todo todo)
         {
             _logger.LogInformation($"ToDoApp: Client sending new Todo with title '{todo.Title}'.");
             await RestService.For<ITodoApiClient>(_httpClient).CreateTodo(todo);
