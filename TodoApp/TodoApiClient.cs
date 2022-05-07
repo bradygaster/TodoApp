@@ -34,7 +34,7 @@
         Task<Todo> GetTodo(int id);
 
         [Post("/todos")]
-        Task CreateTodo(Todo todo);
+        Task CreateTodo([Body] Todo todo);
 
         [Delete("/todo/{id}")]
         Task DeleteTodo(int id);

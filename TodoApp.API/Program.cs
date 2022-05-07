@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Create a new todo
-app.MapPost("/todos", async (TodoDbContext dbContext, Todo todo) =>
+app.MapPost("/todos", async (Todo todo, TodoDbContext dbContext) =>
     {
         app.Logger.LogInformation($"ToDoApp: Received new Todo with title '{todo.Title}'.");
         dbContext.Todos.Add(todo);
