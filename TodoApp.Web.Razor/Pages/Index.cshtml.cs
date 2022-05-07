@@ -38,7 +38,7 @@ namespace TodoApp.Web.Pages
             if (NewTodo != null)
             {
                 _logger.LogInformation($"ToDoApp: Model state was valid. Logging new todo item with title of '{NewTodo.Title}'");
-                await _todoApiClient.CreateTodo(new Todo { Title = NewTodo.Title });
+                await _todoApiClient.CreateTodo(NewTodo.Title);
                 _logger.LogInformation("ToDoApp: Called API client without any errors.");
             }
 
