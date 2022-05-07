@@ -1,6 +1,7 @@
 ﻿namespace TodoApp
 {
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
     using Refit;
     using System;
     using System.Collections.Generic;
@@ -48,16 +49,21 @@
 
         private readonly IConfiguration _configuration;
 
-        public TodoApiClient(HttpClient httpClient, IConfiguration configuration)
+        private readonly ILogger<TodoApiClient> _logger;
+
+        public TodoApiClient(HttpClient httpClient, IConfiguration configuration, ILogger<TodoApiClient> logger)
         {
             _httpClient = httpClient;
             _configuration = configuration;
             _httpClient.BaseAddress = new Uri(_configuration["ApiUrlBase"]);
+            _logger = logger;
         }
 
         public async Task CreateTodo(Todo todo)
         {
+            _logger.LogInformation($"ToDoApp: Client sending new Todo with title '{todo.Title}'.");
             await RestService.For<ITodoApiClient>(_httpClient).CreateTodo(todo);
+            _logger.LogInformation($"ToDoApp: Client sent new Todo with title '{todo.Title}'.");
         }
 
         public async Task DeleteTodo(int id)
