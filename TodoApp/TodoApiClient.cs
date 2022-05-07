@@ -68,12 +68,16 @@
 
         public async Task DeleteTodo(int id)
         {
+            _logger.LogInformation($"ToDoApp: Client sending new DELETE for Todo {id}.");
             await RestService.For<ITodoApiClient>(_httpClient).DeleteTodo(id);
+            _logger.LogInformation($"ToDoApp: Client sent new DELETE for Todo {id}.");
         }
 
         public async Task<Todo> GetTodo(int id)
         {
+            _logger.LogInformation($"ToDoApp: Client sending new GET for Todo {id}.");
             return await RestService.For<ITodoApiClient>(_httpClient).GetTodo(id);
+            _logger.LogInformation($"ToDoApp: Client sent new GET for Todo {id}.");
         }
 
         public async Task<IEnumerable<Todo>> GetTodos()
@@ -83,7 +87,9 @@
 
         public async Task UpdateTodo(int id, Todo todo)
         {
+            _logger.LogInformation($"ToDoApp: Client sending new PUT for Todo {id}.");
             await RestService.For<ITodoApiClient>(_httpClient).UpdateTodo(id, todo);
+            _logger.LogInformation($"ToDoApp: Client sent new PUT for Todo {id}.");
         }
     }
 }
