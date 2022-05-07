@@ -91,19 +91,14 @@
     protected async Task RefreshTodos()
     {
         Todos = await _todoApiClient.GetTodos();
+        newTodoTitle = string.Empty;
+        await newTitleTextBox.FocusAsync();
     }
 
     protected async Task CreateNewTodo()
     {
-        await CreateNewTodo(new Todo { Title = newTodoTitle });
-    }
-
-    protected async Task CreateNewTodo(Todo todo)
-    {
-        await _todoApiClient.CreateTodo(todo);
+        await _todoApiClient.CreateTodo(newTodoTitle);
         await RefreshTodos();
-        newTodoTitle = string.Empty;
-        await newTitleTextBox.FocusAsync();
     }
 
     protected async Task MarkComplete(int todoId)
