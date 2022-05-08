@@ -11,6 +11,7 @@
     using System.Text.Json.Serialization;
     using System.Threading.Tasks;
 
+    [Serializable]
     public class Todo
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -27,14 +28,14 @@
 
     public interface ITodoApiClient
     {
-        [Get("/todos")]
+        [Get("/todos/")]
         Task<IEnumerable<Todo>> GetTodos();
 
-        [Get("/todo/{id}")]
+        [Get("/todo/{id}/")]
         Task<Todo> GetTodo(int id);
 
-        [Post("/todos")]
-        Task CreateTodo(string title);
+        [Post("/todos/")]
+        Task CreateTodo([Body] Todo todo);
 
         [Delete("/todo/{id}")]
         Task DeleteTodo(int id);
@@ -59,11 +60,11 @@
             _logger = logger;
         }
 
-        public async Task CreateTodo(string title)
+        public async Task CreateTodo([Body] Todo todo)
         {
-            _logger.LogInformation($"ToDoApp: Client sending new Todo with title '{title}'.");
-            await RestService.For<ITodoApiClient>(_httpClient).CreateTodo(title);
-            _logger.LogInformation($"ToDoApp: Client sent new Todo with title '{title}'.");
+            _logger.LogInformation($"ToDoApp: Client sending new Todo with title '{todo.Title}'.");
+            await RestService.For<ITodoApiClient>(_httpClient).CreateTodo(todo);
+            _logger.LogInformation($"ToDoApp: Client sent new Todo with title '{todo.Title}'.");
         }
 
         public async Task DeleteTodo(int id)

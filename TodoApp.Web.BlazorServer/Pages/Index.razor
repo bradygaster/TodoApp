@@ -84,20 +84,17 @@
         {
             await newTitleTextBox.FocusAsync();
         }
-
-        await base.OnAfterRenderAsync(firstRender);
     }
 
     protected async Task RefreshTodos()
     {
         Todos = await _todoApiClient.GetTodos();
         newTodoTitle = string.Empty;
-        await newTitleTextBox.FocusAsync();
     }
 
     protected async Task CreateNewTodo()
     {
-        await _todoApiClient.CreateTodo(newTodoTitle);
+        await _todoApiClient.CreateTodo(new Todo { Title = newTodoTitle });
         await RefreshTodos();
     }
 
